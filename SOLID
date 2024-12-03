@@ -4,7 +4,8 @@ L - Liskov Substitution -
 If classB is subtype of classA, then we should be able to replace object of A with B without breaking the behaviour of the program. 
 sub-class should extend the capability of parent class, not narrow it down.
 I - Interface Segmented Principle
-D - Dependency Inversion Principle
+Interfaces should be such that clients should not implement unnecessary functions taht they don't need.
+D - Dependency Inversion Principle - Class should depend on interfaces rather than concrete classes.
 
 Single responsibility principle - This invoice class can change when 
 a)calculateTotal changes by adding GST or discount, b)logic of printing invoice changes, c)what if we want to save to file istead of saving to DB.
@@ -81,3 +82,51 @@ class Bicycle implements Bike{
   }
 }
 Bicycle class doesn't follow Liskov substitution principle as it doesn't implement turnOnEngine.
+
+Interface Segmented principle -
+interface RestaurantEmployee{
+  void washDishes();
+  void serverFood();
+  void cookFood();
+  void takeOrder();
+}
+class Waiter implements RestaurantEmployee{
+  void washDishes(){ //Not my job}
+  void serverFood(){ System.out.println("Serving the customer."}
+  void takeOrder(){ System.out.println("Taking the order."}
+  void cookFood(){ //Not my job}
+}
+Break RestaurantInterface into smaller interfaces such that Waiter doesn't need to implement unnecessary methods.
+interface WaiterInterface{
+  void takeOrder();
+  void serverFood();
+}
+interface ChefInterface{
+  void cookFood();
+  void decideMenu();
+}
+interface HelperInterface{
+  void washDishes();
+}
+Now class Waiter implements only WaiterInterface ans all methods of WaiterInterface are valid to Waiter.
+
+Dependency Inversion Principle - class should depend on interface rather than concrete classes.
+We have an interface Keyboard and classes WiredKeyboard and BluetoothKeyboard implements Keyboard interface.
+class MacBook{
+  public final WiredKeyBoard keyboard;
+  public final WiredMouse mouse;
+  public MacBook(){
+    keyboard = new WiredKeyboard();
+    mouse = new WiredMouse();
+  }
+}
+If in future, we want to enchance MacBook to bluetooth, we will have to change the class implementation. Instead, use interface for keyboard and mouse variables.
+class MacBook{
+  public final Keyboard keyboard;
+    public final Mouse mouse;
+    public MacBook(Keyboard keyboard, Mouse mouse){
+      this.keyboard = keyboard;
+      this.mouse = mouse;
+    }
+}
+Above keyboard and mouse can be any combinations of wired or bluetooth.

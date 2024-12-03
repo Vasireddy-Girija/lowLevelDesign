@@ -1,1 +1,76 @@
+S - Single responsibility principle - A class should have only 1 reason to change.
+O - Open/ Closed principle - Open to extension, close to modification
+L - Liskov Substitution - 
+If classB is subtype of classA, then we should be able to replace object of A with B without breaking the behaviour of the program. 
+sub-class should extend the capability of parent class, not narrow it down.
+I - Interface Segmented Principle
+D - Dependency Inversion Principle
 
+Single responsibility principle - This invoice class can change when 
+a)calculateTotal changes by adding GST or discount, b)logic of printing invoice changes, c)what if we want to save to file istead of saving to DB.
+So this class can change due to more than 1 reason. So it doesn't follow Single responsibility prrinciple.
+class Invoice{
+  private Marker marker;
+  private int quantity;
+
+  public Invoice(Marker marker, int quantity){
+      this.marker = marker;
+      this.quantity = quantity;
+  }
+
+  public int calculateTotal(){
+      return this.price*quantity;
+  }
+
+  public void printInvoice(){};
+  public void saveToDB(){};
+}
+
+Make 4 classes - Invoice, InvoiceCalculator, InvoicePrinter, InvoiceDAO (data access layer)
+
+Open/ Closed principle - Open to extension, close to modification
+class InvoiceDao{
+  public void saveToDB(){}
+}
+If we want to save to file, we will need to add one more method saveToFile() to class InvoiceDao. 
+Instead, create interface for InvoiceDao.
+interface InvoiceDao{
+  public void save(Invoice invoice);
+}
+class DatabaseInvoiceDao implements InvoiceDao{
+  @Override
+  public void save(Invoice invoice){
+    //saveToDB
+  }
+}
+class FileInvoiceDao implements InvoiceDao{
+  @Override
+  public void save(Invoice invoice){
+    //saveToFile
+  }
+}
+In future, if I have to save in some other storage, I'll will craete new class by implementing this interface without changing the existing code.
+Not good to change the existing code as it is already well tested.
+
+Liskov Substitution Principle -
+interface Bike{
+  void turnOnEngine();
+  void accelerate();
+}
+class MotorCycle implements Bike{
+  boolean isEngineOn;
+  int speed;
+  @Override
+  void turnOnEngine(){
+    isEngineOn = true;
+  }
+  @Override
+  void accelerate(){
+    speed = speed+10;
+  }
+}
+class Bicycle implements Bike{
+  int speed;
+  @Override
+  
+}

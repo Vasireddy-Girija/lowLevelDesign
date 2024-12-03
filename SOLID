@@ -72,5 +72,12 @@ class MotorCycle implements Bike{
 class Bicycle implements Bike{
   int speed;
   @Override
-  
+  void turnOnEngine(){
+    throw new AssertionError("There is no engine.");
+  }
+  @Override
+  void accelerate(){
+    //doSomething
+  }
 }
+Bicycle class doesn't follow Liskov substitution principle as it doesn't implement turnOnEngine.
